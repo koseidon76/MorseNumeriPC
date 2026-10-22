@@ -1,0 +1,36 @@
+
+name: Compila MorseNumeriPC per Windows
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Scarica il progetto
+        uses: actions/checkout@v4
+
+      - name: Installa Python per la compilazione online
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Installa le dipendenze
+        run: python -m pip install --upgrade pip && pip install -r requirements.txt
+
+      - name: Compila l'eseguibile Windows
+        run: pyinstaller --noconfirm --clean --onefile --windowed --name MorseNumeriPC --collect-all soundcard MorseNumeriPC.py
+
+      - name: Pubblica il file EXE da scaricare
+        uses: actions/upload-artifact@v4
+        with:
+          name: MorseNumeriPC-Windows
+          path: dist/MorseNumeriPC.exe
+          if-no-files-found: error
+          retention-days: 14
