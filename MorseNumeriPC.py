@@ -16,7 +16,8 @@ class MorseNumeriPC:
     def __init__(self, root):
         self.root = root
         self.root.title("MorseNumeriPC")
-        self.root.geometry("340x530")
+        # Finestra allungata per far stare tutti i pulsanti
+        self.root.geometry("340x590")
         self.root.resizable(False, False)
 
         self.running = False
@@ -62,7 +63,8 @@ class MorseNumeriPC:
                    style="Play.TButton").pack(side="left", expand=True, fill="x", padx=(3, 0))
 
         ttk.Label(frame, text="Numeri riconosciuti").pack(anchor="w")
-        self.output = tk.Text(frame, height=9, wrap="word", font=("Consolas", 14))
+        # Altezza ridotta a 6 per fare spazio ai pulsanti in basso
+        self.output = tk.Text(frame, height=6, wrap="word", font=("Consolas", 14))
         self.output.pack(fill="both", expand=True, pady=(3, 7))
 
         actions = ttk.Frame(frame)
