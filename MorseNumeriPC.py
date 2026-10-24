@@ -16,7 +16,7 @@ class MorseNumeriPC:
     def __init__(self, root):
         self.root = root
         self.root.title("MorseNumeriPC")
-        self.root.geometry("310x455")
+        self.root.geometry("340x530")
         self.root.resizable(False, False)
 
         self.running = False
@@ -31,6 +31,10 @@ class MorseNumeriPC:
         self.threshold = tk.DoubleVar(value=0.06)
         self.dot_duration = tk.DoubleVar(value=0.25)
         self.status = tk.StringVar(value="Fermo")
+
+        style = ttk.Style()
+        style.configure("Play.TButton", font=("Segoe UI", 11, "bold"), padding=(6, 8))
+        style.configure("Big.TButton", font=("Segoe UI", 11, "bold"), padding=(6, 12))
 
         frame = ttk.Frame(root, padding=10)
         frame.pack(fill="both", expand=True)
@@ -52,17 +56,21 @@ class MorseNumeriPC:
 
         buttons = ttk.Frame(frame)
         buttons.pack(fill="x", pady=(0, 7))
-        ttk.Button(buttons, text="Avvia", command=self.start).pack(side="left", expand=True, fill="x", padx=(0, 3))
-        ttk.Button(buttons, text="Ferma", command=self.stop).pack(side="left", expand=True, fill="x", padx=(3, 0))
+        ttk.Button(buttons, text="Avvia", command=self.start,
+                   style="Play.TButton").pack(side="left", expand=True, fill="x", padx=(0, 3))
+        ttk.Button(buttons, text="Ferma", command=self.stop,
+                   style="Play.TButton").pack(side="left", expand=True, fill="x", padx=(3, 0))
 
         ttk.Label(frame, text="Numeri riconosciuti").pack(anchor="w")
-        self.output = tk.Text(frame, height=9, wrap="word", font=("Consolas", 11))
+        self.output = tk.Text(frame, height=9, wrap="word", font=("Consolas", 14))
         self.output.pack(fill="both", expand=True, pady=(3, 7))
 
         actions = ttk.Frame(frame)
         actions.pack(fill="x")
-        ttk.Button(actions, text="Copia", command=self.copy).pack(side="left", expand=True, fill="x", padx=(0, 3))
-        ttk.Button(actions, text="RESET MEMORIA", command=self.reset_memory).pack(side="left", expand=True, fill="x", padx=(3, 0))
+        ttk.Button(actions, text="Copia", command=self.copy,
+                   style="Big.TButton").pack(side="left", expand=True, fill="x", padx=(0, 3))
+        ttk.Button(actions, text="RESET MEMORIA", command=self.reset_memory,
+                   style="Big.TButton").pack(side="left", expand=True, fill="x", padx=(3, 0))
 
         self.threshold.trace_add("write", self.update_threshold_label)
         self.root.protocol("WM_DELETE_WINDOW", self.close)
@@ -93,7 +101,6 @@ class MorseNumeriPC:
         self.status.set("Fermo")
 
     def reset_memory(self):
-        # Invalida qualsiasi callback già in coda e interrompe la sessione audio.
         self.session_id += 1
         self.running = False
         self.symbols = ""
@@ -167,10 +174,8 @@ class MorseNumeriPC:
                     self.running = False
                     messagebox.showerror("Errore audio", value[len("__ERROR__"):])
                     continue
-                # Il testo visibile è l'unica fonte per conservare i numeri.
-                current = self.output.get("1.0", "end-1c")
-                separator = "\n" if current and not current.endswith("\n") else ""
-                self.output.insert("end", separator + value)
+                # Numeri accodati in riga (nessun a capo)
+                self.output.insert("end", value)
                 self.output.see("end")
         except queue.Empty:
             pass
