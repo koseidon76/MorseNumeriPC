@@ -1,0 +1,19 @@
+MorseNumeriPC v2 — aggiornamento
+
+Cosa cambia:
+- Finestra compatta verticale.
+- Sensibilità impostata al massimo all'avvio (0,060).
+- RESET MEMORIA ferma l'ascolto, cancella il testo e azzera lo stato del decodificatore.
+- Le decodifiche in coda della sessione precedente vengono ignorate dopo il reset.
+
+COME AGGIORNARE SU GITHUB
+1. Apri il repository koseidon76/MorseNumeriPC.
+2. Apri il file MorseNumeriPC.py.
+3. Premi la matita (Edit), seleziona tutto il vecchio contenuto e incolla il nuovo contenuto di MorseNumeriPC.py contenuto in questo ZIP.
+4. Premi Commit changes.
+5. Apri Actions, entra nell'ultima esecuzione completata e scarica l'artifact MorseNumeriPC-Windows.
+6. Estrai lo ZIP scaricato da Actions: contiene MorseNumeriPC.exe.
+
+Se il tuo workflow attuale ha un nome o percorso diverso, puoi anche sostituire solo MorseNumeriPC.py e avviare manualmente il workflow dalla scheda Actions.
+
+Nota: la sensibilità ottimale dipende dal volume e dal tipo di audio. Il valore massimo predefinito non garantisce che ogni segnale venga riconosciuto correttamente.
